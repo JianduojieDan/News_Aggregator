@@ -1,0 +1,103 @@
+{% extends 'base.html' %}
+
+{% block title %}My Favorites - News Aggregator{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col">
+        <h1 class="display-5">My Favorites</h1>
+        <p class="lead">Articles you've saved for later</p>
+    </div>
+</div>
+
+{% if articles %}
+<div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+    {% for article in articles %}
+    <div class="col">
+        <div class="card h-100 article-card">
+            {% if article.image_url %}
+            <img src="{{ article.image_url }}" class="card-img-top article-image" alt="{{ article.title }}">
+            {% else %}
+            <div class="card-img-top article-image bg-light d-flex align-items-center justify-content-center">
+                <i class="fas fa-newspaper fa-3x text-secondary"></i>
+            </div>
+            {% endif %}
+            <div class="card-body">
+                <h5 class="card-title">{{ article.title }}</h5>
+                <p class="card-text text-muted">
+                    <small>
+                        <img src="{{ article.source.logo_url }}" alt="{{ article.source.name }}" class="source-logo me-2">
+                        {{ article.source.name }} | {{ article.published_at.strftime('%b %d, %Y') }}
+                    </small>
+                </p>
+            </div>
+            <div class="card-footer d-flex justify-content-between align-items-center">
+                <a href="{{ url_for('news.article_detail', id=article.id) }}" class="btn btn-sm btn-primary">Read More</a>
+                <button class="btn btn-sm btn-link favorite-btn active" data-article-id="{{ article.id }}">
+                    <i class="fas fa-heart"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+{% if pagination.pages > 1 %}
+<nav aria-label="Page navigation" class="mt-4">
+    <ul class="pagination">
+        {% if pagination.has_prev %}
+        <li class="page-item">
+            <a class="page-link" href="{{ url_for('news.favorites', page=pagination.prev_num) }}" aria-label="Previous">
+                <span aria-hidden="true">&laquo;</span>
+            </a>
+        </li>
+        {% else %}
+        <li class="page-item disabled">
+            <a class="page-link" href="#" aria-label="Previous">
+                <span aria-hidden="true">&laquo;</span>
+            </a>
+        </li>
+        {% endif %}
+
+        {% for page_num in pagination.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
+            {% if page_num %}
+                {% if page_num == pagination.page %}
+                <li class="page-item active">
+                    <a class="page-link" href="{{ url_for('news.favorites', page=page_num) }}">{{ page_num }}</a>
+                </li>
+                {% else %}
+                <li class="page-item">
+                    <a class="page-link" href="{{ url_for('news.favorites', page=page_num) }}">{{ page_num }}</a>
+                </li>
+                {% endif %}
+            {% else %}
+                <li class="page-item disabled">
+                    <a class="page-link" href="#">...</a>
+                </li>
+            {% endif %}
+        {% endfor %}
+
+        {% if pagination.has_next %}
+        <li class="page-item">
+            <a class="page-link" href="{{ url_for('news.favorites', page=pagination.next_num) }}" aria-label="Next">
+                <span aria-hidden="true">&raquo;</span>
+            </a>
+        </li>
+        {% else %}
+        <li class="page-item disabled">
+            <a class="page-link" href="#" aria-label="Next">
+                <span aria-hidden="true">&raquo;</span>
+            </a>
+        </li>
+        {% endif %}
+    </ul>
+</nav>
+{% endif %}
+
+{% else %}
+<div class="alert alert-info">
+    <p>You haven't saved any articles to your favorites yet. Browse news and click the heart icon to save articles for later.</p>
+    <a href="{{ url_for('news.index') }}" class="btn btn-primary">Browse News</a>
+</div>
+{% endif %}
+{% endblock %}

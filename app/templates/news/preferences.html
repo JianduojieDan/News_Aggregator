@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block title %}News Preferences - News Aggregator{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col">
+        <h1 class="display-5">News Preferences</h1>
+        <p class="lead">Customize your news feed by selecting your preferred sources</p>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-8 mx-auto">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">Select Your Preferred News Sources</h5>
+            </div>
+            <div class="card-body">
+                <form method="POST" action="{{ url_for('news.preferences') }}">
+                    <div class="row row-cols-1 row-cols-md-2 g-4 mb-4">
+                        {% for source in sources %}
+                        <div class="col">
+                            <div class="form-check custom-control custom-checkbox">
+                                <input type="checkbox" class="form-check-input" id="source-{{ source.id }}"
+                                       name="sources" value="{{ source.id }}"
+                                       {% if source.id in user_preferences %}checked{% endif %}>
+                                <label class="form-check-label d-flex align-items-center" for="source-{{ source.id }}">
+                                    <img src="{{ source.logo_url }}" alt="{{ source.name }}" class="source-logo me-2">
+                                    <span>{{ source.name }}</span>
+                                </label>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-primary">Save Preferences</button>
+                        <a href="{{ url_for('news.index') }}" class="btn btn-outline-secondary">Cancel</a>
+                    </div>
+                </form>
+            </div>
+            <div class="card-footer">
+                <p class="mb-0 text-muted">
+                    <small>Note: If no sources are selected, articles from all sources will be shown.</small>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

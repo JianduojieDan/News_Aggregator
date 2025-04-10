@@ -1,0 +1,155 @@
+/* 新闻聚合器的自定义样式 */
+
+/* 布局 */
+body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background-color: #f8f9fa;
+}
+
+.footer {
+    margin-top: auto;
+    padding: 1.5rem 0;
+    background-color: #343a40;
+    color: #fff;
+}
+
+.container {
+    max-width: 1200px;
+}
+
+/* 文章卡片 */
+.article-card {
+    height: 100%;
+    transition: all 0.3s ease;
+    border: none;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    overflow: hidden;
+}
+
+.article-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+}
+
+.article-image {
+    height: 200px;
+    object-fit: cover;
+    width: 100%;
+}
+
+.card-title {
+    font-weight: 600;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* 源元素 */
+.source-logo {
+    max-height: 40px;
+    max-width: 100px;
+    object-fit: contain;
+}
+
+.source-card {
+    transition: transform 0.3s ease;
+    border: none;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.source-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+}
+
+/* 收藏按钮 */
+.favorite-btn {
+    cursor: pointer;
+    transition: all 0.3s ease;
+    color: #6c757d;
+    padding: 0.25rem 0.5rem;
+    border-radius: 50%;
+}
+
+.favorite-btn:hover {
+    background-color: rgba(220, 53, 69, 0.1);
+}
+
+.favorite-btn.active {
+    color: #dc3545;
+}
+
+/* 文章内容 */
+.article-content {
+    font-size: 1.1rem;
+    line-height: 1.6;
+}
+
+/* 分页 */
+.pagination {
+    justify-content: center;
+    margin-top: 2rem;
+}
+
+/* 导航栏 */
+.navbar {
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.navbar-brand {
+    font-weight: 700;
+    font-size: 1.5rem;
+}
+
+/* 表单 */
+.form-control:focus {
+    border-color: #80bdff;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+/* 按钮 */
+.btn-primary {
+    background-color: #007bff;
+    border-color: #007bff;
+}
+
+.btn-primary:hover {
+    background-color: #0069d9;
+    border-color: #0062cc;
+}
+
+/* 动画 */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.fade-in {
+    animation: fadeIn 0.5s ease-in;
+}
+
+/* 响应式调整 */
+@media (max-width: 768px) {
+    .article-image {
+        height: 160px;
+    }
+
+    .card-title {
+        font-size: 1.1rem;
+    }
+}
+
+/* 深色模式支持 */
+@media (prefers-color-scheme: dark) {
+    .bg-light {
+        background-color: #343a40 !important;
+    }
+
+    .text-muted {
+        color: #adb5bd !important;
+    }
+}

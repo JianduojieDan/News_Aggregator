@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ article.title }} - News Aggregator{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{{ url_for('news.index') }}">Home</a></li>
+                <li class="breadcrumb-item"><a href="{{ url_for('news.source_articles', id=article.source.id) }}">{{ article.source.name }}</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Article</li>
+            </ol>
+        </nav>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-8">
+        <article>
+            <header class="mb-4">
+                <h1 class="display-5 fw-bold">{{ article.title }}</h1>
+                <div class="text-muted mb-2">
+                    <img src="{{ article.source.logo_url }}" alt="{{ article.source.name }}" class="source-logo me-2">
+                    {{ article.source.name }} | {{ article.published_at.strftime('%B %d, %Y at %I:%M %p') }}
+                </div>
+                <div class="d-flex align-items-center mb-3">
+                    <a href="{{ article.url }}" target="_blank" class="btn btn-outline-primary me-2">
+                        <i class="fas fa-external-link-alt me-1"></i> View Original
+                    </a>
+                    {% if current_user.is_authenticated %}
+                    <button class="btn btn-outline-danger favorite-btn {{ 'active' if article.id in user_favorites else '' }}"
+                            data-article-id="{{ article.id }}">
+                        <i class="fa{{ 's' if article.id in user_favorites else 'r' }} fa-heart me-1"></i>
+                        {{ 'Remove from Favorites' if article.id in user_favorites else 'Add to Favorites' }}
+                    </button>
+                    {% endif %}
+                </div>
+            </header>
+
+            {% if article.image_url %}
+            <figure class="mb-4">
+                <img class="img-fluid rounded" src="{{ article.image_url }}" alt="{{ article.title }}">
+            </figure>
+            {% endif %}
+
+            <section class="article-content">
+                {% if article.content %}
+                {{ article.content|safe }}
+                {% else %}
+                <div class="alert alert-info">
+                    <p>Full content is not available. Please click "View Original" to read the complete article.</p>
+                </div>
+                {% endif %}
+            </section>
+        </article>
+    </div>
+
+    <div class="col-lg-4">
+        <div class="card mb-4">
+            <div class="card-header">About the Source</div>
+            <div class="card-body">
+                <div class="d-flex align-items-center mb-3">
+                    <img src="{{ article.source.logo_url }}" alt="{{ article.source.name }}" class="source-logo me-3">
+                    <h5 class="mb-0">{{ article.source.name }}</h5>
+                </div>
+                <p>{{ article.source.description }}</p>
+                <a href="{{ url_for('news.source_articles', id=article.source.id) }}" class="btn btn-sm btn-outline-primary">
+                    More from this source
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block title %}News Sources - News Aggregator{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col">
+        <h1 class="display-5">News Sources</h1>
+        <p class="lead">Browse all available news sources</p>
+    </div>
+</div>
+
+<div clasFs="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+    {% for source in sources %}
+    <div class="col">
+        <div class="card h-100 source-card">
+            <div class="card-body text-center">
+                <img src="{{ source.logo_url }}" alt="{{ source.name }}" class="source-logo mb-3">
+                <h5 class="card-title">{{ source.name }}</h5>
+                <p class="card-text">{{ source.description }}</p>
+            </div>
+            <div class="card-footer text-center">
+                <a href="{{ url_for('news.source_articles', id=source.id) }}" class="btn btn-primary">View Articles</a>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}
